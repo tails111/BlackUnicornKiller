@@ -100,7 +100,7 @@ public class BlackUnicornKiller extends ActiveScript implements PaintListener {
         g.drawString(("Horns/H: "+ postedHorns + "(" + postedHornsPerMath + ")"),15, 156);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
 
-        Globals.interacting = NPCs.getNearest(Globals.ID_NPCS_UNICORNS);
+        Globals.interacting = Globals.me.getInteracting();
 
         if(Globals.interacting != null){
             if(Globals.interacting.getHealthPercent() >= 75){

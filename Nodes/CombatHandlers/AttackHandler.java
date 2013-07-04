@@ -10,6 +10,7 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.NPCs;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
@@ -96,6 +97,7 @@ public class AttackHandler extends Node {
         Globals.emergencyTeleport();
 
         Globals.theUnicorn = NPCs.getNearest(Globals.ID_NPCS_UNICORNS);
+        Globals.interacting = Players.getLocal().getInteracting();
 
         if(Globals.theUnicorn == null){
             if(paceUnicorns.activate()){

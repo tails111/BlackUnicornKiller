@@ -115,6 +115,7 @@ public class LootHandler extends Node {
     @Override
     public void execute(){
         while(activate()){
+            Globals.Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
             Globals.emergencyTeleport();
 
             if(Globals.Loot != null){
