@@ -44,7 +44,7 @@ public class Globals {
 
 
     public static Character interacting;
-    public static Character me = Players.getLocal();
+    public static Character me;
 
     public static boolean emergencyTeleport(){
         if(me!=null){

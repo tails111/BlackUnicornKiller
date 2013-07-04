@@ -25,7 +25,9 @@ public class FoodHandler extends Node {
     @Override
     public boolean activate(){
 
-        food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
+        if(Inventory.getItem(Globals.ID_ITEMS_LOBSTER) != null){
+            food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
+        }
 
         if(!Tabs.getCurrent().equals(Tabs.INVENTORY)){
             Tabs.INVENTORY.open();
