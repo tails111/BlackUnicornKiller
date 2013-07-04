@@ -5,7 +5,6 @@ import BlackUnicornKiller.Nodes.Globals;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.wrappers.Tile;
 
@@ -19,7 +18,7 @@ public class WalkToBankHandler extends Node {
     @Override
     public boolean activate(){
         return (Calculations.distanceTo(TILE_TELEPORT_AFTER)<=45) && Inventory.getCount(Globals.ID_ITEMS_HORN)>=27 &&
-                (Players.getLocal().getAnimation()==-1 && Calculations.distanceTo(TILE_BANK)>=5);
+                (Globals.me.getAnimation()==-1 && Calculations.distanceTo(TILE_BANK)>=5);
     }
 
     @Override

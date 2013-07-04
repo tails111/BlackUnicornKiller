@@ -2,10 +2,17 @@ package BlackUnicornKiller.Nodes;
 
 import BlackUnicornKiller.BlackUnicornKiller;
 import org.powerbot.core.script.job.Task;
+import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.interactive.*;
+import org.powerbot.game.api.wrappers.interactive.Character;
+import org.powerbot.game.api.wrappers.node.GroundItem;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,15 +42,23 @@ public class Globals {
     public static final Tile TILE_LOAD_WILDERNESS = new Tile(3143,3635,0);
     public static final Tile TILE_LOAD_EDGEVILLE = new Tile(3067,3505,0);
 
+    public static Character interacting = Players.getLocal().getInteracting();
+    public static Character me = Players.getLocal();
+    public static NPC theUnicorn = NPCs.getNearest(ID_NPCS_UNICORNS);
+    public static GroundItem Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
+    public static WidgetChild food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
+
+    public static WidgetChild upText = Widgets.get(548, 436).getChild(0);
+
 
     public static boolean emergencyTeleport(){
-        if(Players.getLocal().getHealthPercent()<=70){
+        if(me.getHealthPercent()<=70){
             Timer timeCheck = new Timer(2000);
             do{
                 if(Inventory.contains(ID_ITEMS_FALLYTAB)){
                     Inventory.getItem(ID_ITEMS_FALLYTAB).getWidgetChild().interact("Break");
                 }
-            }while(Players.getLocal().getHealthPercent()<=70 && Inventory.contains(ID_ITEMS_FALLYTAB) && timeCheck.isRunning());
+            }while(me.getHealthPercent()<=70 && Inventory.contains(ID_ITEMS_FALLYTAB) && timeCheck.isRunning());
             return true;
         }
         return false;

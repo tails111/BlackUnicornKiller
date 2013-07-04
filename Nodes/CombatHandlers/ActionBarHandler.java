@@ -1,11 +1,11 @@
 package BlackUnicornKiller.Nodes.CombatHandlers;
 
 
+import BlackUnicornKiller.Nodes.Globals;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
-import org.powerbot.game.api.methods.interactive.Players;
 
 public class ActionBarHandler{
 
@@ -13,7 +13,7 @@ public class ActionBarHandler{
         if(Settings.get(679)>=1){
             do{
                 Task.sleep(50,100);
-            }while(Players.getLocal().isInCombat());
+            }while(Globals.me.isInCombat());
             int x=0;
             do{
                 x++;
@@ -21,7 +21,7 @@ public class ActionBarHandler{
                 if(abilityReady(1)){
                     executeAbility(1);
                 }
-                if(Players.getLocal().getMessage().matches("Momentum is now active.")){
+                if(Globals.me.getMessage().matches("Momentum is now active.")){
                     break;
                 }
             }while(x<=20);

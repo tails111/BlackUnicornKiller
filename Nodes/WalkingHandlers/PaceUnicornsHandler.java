@@ -6,7 +6,6 @@ import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.wrappers.Tile;
 
@@ -43,8 +42,8 @@ public class PaceUnicornsHandler extends Node {
     public boolean activate(){
         Globals.emergencyTeleport();
         return(Inventory.contains(Globals.ID_ITEMS_LOBSTER) && !Inventory.isFull()
-                && Players.getLocal().getHealthPercent()>=25 && distanceToUnicorns()<=10
-                && NPCs.getNearest(Globals.ID_NPCS_UNICORNS)==null);
+                && Globals.me.getHealthPercent()>=25 && distanceToUnicorns()<=10
+                && Globals.interacting==null);
     }
 
     @Override

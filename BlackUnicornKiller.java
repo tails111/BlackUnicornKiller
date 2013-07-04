@@ -4,6 +4,7 @@ import BlackUnicornKiller.Nodes.BankingHandlers.BankingHandler;
 import BlackUnicornKiller.Nodes.CombatHandlers.ActionBarHandler;
 import BlackUnicornKiller.Nodes.CombatHandlers.AttackHandler;
 import BlackUnicornKiller.Nodes.CombatHandlers.LootHandler;
+import BlackUnicornKiller.Nodes.Globals;
 import BlackUnicornKiller.Nodes.WalkingHandlers.TeleportToBankHandler;
 import BlackUnicornKiller.Nodes.WalkingHandlers.TeleportToUnicornsHandler;
 import BlackUnicornKiller.Nodes.WalkingHandlers.WalkToBankHandler;
@@ -18,13 +19,11 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.client.Client;
 
 import java.awt.*;
@@ -101,20 +100,20 @@ public class BlackUnicornKiller extends ActiveScript implements PaintListener {
         g.drawString(("Horns/H: "+ postedHorns + "(" + postedHornsPerMath + ")"),15, 156);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
 
-        final NPC interacting = NPCs.getNearest("Black Unicorn");
+        Globals.interacting = NPCs.getNearest(Globals.ID_NPCS_UNICORNS);
 
-        if(interacting != null){
-            if(interacting.getHealthPercent() >= 75){
+        if(Globals.interacting != null){
+            if(Globals.interacting.getHealthPercent() >= 75){
                 g.setColor(Color.GREEN);
-            } else if(interacting.getHealthPercent() >= 50){
+            } else if(Globals.interacting.getHealthPercent() >= 50){
                 g.setColor(Color.YELLOW);
-            } else if(interacting.getHealthPercent() >= 25){
+            } else if(Globals.interacting.getHealthPercent() >= 25){
                 g.setColor(Color.ORANGE);
             } else {
                 g.setColor(Color.RED);
             }
 
-            for(final Polygon p : interacting.getBounds()){
+            for(final Polygon p : Globals.interacting.getBounds()){
                 g.fillPolygon(p);
             }
         }
@@ -131,11 +130,11 @@ public class BlackUnicornKiller extends ActiveScript implements PaintListener {
             if(ActionBarHandler.abilityReady(1)){
                 ActionBarHandler.executeAbility(1);
             }
-            if(Players.getLocal().getMessage().matches("Momentum is now active.")){
+            if(Globals.me.getMessage().matches("Momentum is now active.")){
                 break;
             }
             Task.sleep(50,75);
-        }while(timeCheck.isRunning() && !Players.getLocal().getMessage().matches("Momentum is now active."));
+        }while(timeCheck.isRunning() && !Globals.me.getMessage().matches("Momentum is now active."));
     }
 
     @Override

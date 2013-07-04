@@ -7,7 +7,6 @@ import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Area;
@@ -17,14 +16,13 @@ public class TeleportToBankHandler  extends Node {
 
 
     final Area edgeville = new Area(new Tile(3063,3509,0), new Tile(3100,3486,0));
-    PaceUnicornsHandler unicornPacing = new PaceUnicornsHandler();
 
 
     @Override
     public boolean activate(){
         Globals.emergencyTeleport();
-        return !edgeville.contains(Players.getLocal().getLocation()) &&
-                Players.getLocal().getAnimation() == -1 && Inventory.getCount(Globals.ID_ITEMS_HORN)>=27;
+        return !edgeville.contains(Globals.me.getLocation()) &&
+                Globals.me.getAnimation() == -1 && Inventory.getCount(Globals.ID_ITEMS_HORN)>=27;
     }
 
     @Override
@@ -36,12 +34,12 @@ public class TeleportToBankHandler  extends Node {
             Timer timeCheck2 = new Timer(2000);
             do{
                 Task.sleep(150,275);
-            }while(Players.getLocal().isMoving() && timeCheck2.isRunning());
+            }while(Globals.me.isMoving() && timeCheck2.isRunning());
         }while(timeCheck.isRunning() && Calculations.distanceTo(Globals.TILE_LOAD_WILDERNESS)>=2);
 
         Walking.walk(Globals.TILE_LOAD_WILDERNESS);
 
-        if(Calculations.distanceTo(Globals.TILE_LOAD_WILDERNESS)<=14 && !Players.getLocal().isInCombat()){
+        if(Calculations.distanceTo(Globals.TILE_LOAD_WILDERNESS)<=14 && !Globals.me.isInCombat()){
             if(!Widgets.get(1092).getChild(0).visible()){
                 Widgets.get(640).getChild(113).click(true);
                 Task.sleep(750,1250);

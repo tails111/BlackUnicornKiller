@@ -13,7 +13,6 @@ public class WalkToUnicornsHandler extends Node {
     private Tile distanceToUnicorns;
 
     public static final Tile[] PATH_TO_UNICORNS = new Tile[] {new Tile(3133,3633,0), new Tile(3126,3627,0)};
-    public static final Tile[] PATH_TO_UNICORNS_REVERSE = new Tile[] {new Tile(3126,3627,0), new Tile(3133,3633,0), Globals.TILE_LOAD_WILDERNESS};
 
     @Override
     public boolean activate(){

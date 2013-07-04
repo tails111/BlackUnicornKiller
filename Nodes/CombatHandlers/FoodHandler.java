@@ -5,7 +5,6 @@ import BlackUnicornKiller.Nodes.Globals;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 
 public class FoodHandler extends Node {
@@ -22,19 +21,22 @@ public class FoodHandler extends Node {
 
     @Override
     public boolean activate(){
+
+        Globals.food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
+
         if(!Tabs.getCurrent().equals(Tabs.INVENTORY)){
             Tabs.INVENTORY.open();
         }
         Globals.emergencyTeleport();
-        return (Players.getLocal().validate() && getHpPercent()<=50
+        return (Globals.me.validate() && getHpPercent()<=50
                 && Inventory.getCount(Globals.ID_ITEMS_LOBSTER)>=1);
     }
 
     @Override
     public void execute(){
-        if(Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild() != null){
+        if(Globals.food != null){
             BlackUnicornKiller.status = "Eating food.";
-            Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild().interact("Eat");
+            Globals.food.interact("Eat");
         }
     }
 }

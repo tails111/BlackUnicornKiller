@@ -6,7 +6,6 @@ import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
@@ -22,7 +21,7 @@ public class TeleportToUnicornsHandler  extends Node {
     public boolean activate(){
          return (Calculations.distanceTo(Globals.TILE_LOAD_WILDERNESS)>=10 && PaceUnicornsHandler.distanceToUnicorns()<=6
          && !Inventory.contains(Globals.ID_ITEMS_HORN) && Inventory.contains(Globals.ID_ITEMS_LOBSTER)
-         && NPCs.getNearest(Globals.ID_NPCS_UNICORNS) == null);
+         && Globals.interacting == null);
     }
 
     @Override
