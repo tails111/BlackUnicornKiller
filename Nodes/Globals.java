@@ -44,13 +44,7 @@ public class Globals {
 
 
     public static Character interacting;
-    public static Character me;
-    public static NPC theUnicorn;
-    public static GroundItem Loot;
-    public static WidgetChild food;
-
-    public static WidgetChild upText = Widgets.get(548, 436).getChild(0);
-
+    public static Character me = Players.getLocal();
 
     public static boolean emergencyTeleport(){
         if(me!=null){

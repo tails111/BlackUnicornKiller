@@ -8,6 +8,7 @@ import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Walking;
+import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.tab.Inventory;
@@ -15,12 +16,17 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.node.GroundItem;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 import java.awt.*;
 public class LootHandler extends Node {
 
     Rectangle screen = new Rectangle(1,55,518,258);
     Point clickPoint = new Point();
+
+    public GroundItem Loot;
+    public WidgetChild upText = Widgets.get(548, 436).getChild(0);
 
     public void altCameraTurnTo(Entity e){
         do{
@@ -50,9 +56,9 @@ public class LootHandler extends Node {
                         clickPoint.setLocation(p.getBounds().x,p.getBounds().y);
                     }
                 }
-                if(Globals.upText != null && Globals.upText != null){
+                if(upText != null){
                     e.hover();
-                    if(Globals.upText.getText().contains(cmd) && Globals.upText.getText().contains(sub)){
+                    if(upText.getText().contains(cmd) && upText.getText().contains(sub)){
                         clickPoint.setLocation(e.getCentralPoint());
                         Task.sleep(50,150);
                         Mouse.click(clickPoint, true);
@@ -104,27 +110,27 @@ public class LootHandler extends Node {
         boneClearer();
         Globals.emergencyTeleport();
 
-        Globals.Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
+        Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
 
         if(Inventory.isFull() && Inventory.contains(Globals.ID_ITEMS_LOBSTER)){
             Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild().interact("Eat");
         }
-        return(Globals.Loot != null && !Inventory.isFull());
+        return(Loot != null && !Inventory.isFull());
     }
 
     @Override
     public void execute(){
         while(activate()){
-            Globals.Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
+            Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
             Globals.emergencyTeleport();
 
-            if(Globals.Loot != null){
-                if(!altIsOnScreen(Globals.Loot)){
+            if(Loot != null){
+                if(!altIsOnScreen(Loot)){
                     BlackUnicornKiller.status = "Walking towards Loot";
-                    Walking.walk(Globals.Loot);
+                    Walking.walk(Loot);
                     BlackUnicornKiller.status = "Grabbing Loot.";
-                    Camera.turnTo(Globals.Loot);
-                    if(altInteract(Globals.Loot, "Take", Globals.Loot.getGroundItem().getName())){
+                    Camera.turnTo(Loot);
+                    if(altInteract(Loot, "Take", Loot.getGroundItem().getName())){
                         invChangeSleep();
                     }
 
@@ -132,12 +138,12 @@ public class LootHandler extends Node {
                         sleep(50,100);
                     }
                 } else {
-                    if(Calculations.distanceTo(Globals.Loot)>=2){
+                    if(Calculations.distanceTo(Loot)>=2){
                         BlackUnicornKiller.status = "Turning Camera to Loot.";
-                        altCameraTurnTo(Globals.Loot);
+                        altCameraTurnTo(Loot);
                     }
                     BlackUnicornKiller.status = "Grabbing Loot.";
-                    if(altInteract(Globals.Loot, "Take", Globals.Loot.getGroundItem().getName())){
+                    if(altInteract(Loot, "Take", Loot.getGroundItem().getName())){
                         invChangeSleep();
                     }
                     while(Globals.me.isMoving()){
@@ -145,6 +151,7 @@ public class LootHandler extends Node {
                     }
                 }
             }
+            Loot = null;
             BlackUnicornKiller.actualProfit= BlackUnicornKiller.actualProfit + (Globals.HornPrice);
         }
     }

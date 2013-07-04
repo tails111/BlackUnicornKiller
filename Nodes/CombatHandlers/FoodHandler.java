@@ -6,8 +6,11 @@ import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.tab.Inventory;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 public class FoodHandler extends Node {
+
+    public WidgetChild food;
 
     public int getHpPercent() {
         return Math.abs(100 - 100 * Widgets.get(748, 5).getHeight() / 28);
@@ -22,7 +25,7 @@ public class FoodHandler extends Node {
     @Override
     public boolean activate(){
 
-        Globals.food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
+        food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
 
         if(!Tabs.getCurrent().equals(Tabs.INVENTORY)){
             Tabs.INVENTORY.open();
@@ -34,9 +37,9 @@ public class FoodHandler extends Node {
 
     @Override
     public void execute(){
-        if(Globals.food != null){
+        if(food != null){
             BlackUnicornKiller.status = "Eating food.";
-            Globals.food.interact("Eat");
+            food.interact("Eat");
         }
     }
 }

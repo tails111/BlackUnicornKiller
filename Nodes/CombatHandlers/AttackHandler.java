@@ -8,6 +8,7 @@ import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
+import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -16,6 +17,8 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.interactive.NPC;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 import java.awt.*;
 
@@ -27,13 +30,16 @@ public class AttackHandler extends Node {
     Rectangle screen = new Rectangle(1,55,518,258);
     Point clickPoint = new Point();
 
+    public NPC theUnicorn;
+    public WidgetChild upText = Widgets.get(548, 436).getChild(0);
+
 
     public void altCameraTurnTo(Entity e){
         int x = 0;
         do{
             Camera.setAngle(Camera.getYaw() + Random.nextInt(35, 55));
             x++;
-            if(x>=15){
+            if(x>=15 || e == null){
                 break;
             }
         }while(!altIsOnScreen(e));
@@ -49,8 +55,8 @@ public class AttackHandler extends Node {
                 }
                 e.hover();
                 Task.sleep(25,50);
-                if(Globals.upText != null && Globals.upText.visible()){
-                    if(Globals.upText.getText().contains(cmd) && Globals.upText.getText().contains(sub)){
+                if(upText != null && upText.visible()){
+                    if(upText.getText().contains(cmd) && upText.getText().contains(sub)){
                         Mouse.click(clickPoint, true);
                         Task.sleep(250,500);
                     }else{
@@ -96,17 +102,17 @@ public class AttackHandler extends Node {
     public boolean activate(){
         Globals.emergencyTeleport();
 
-        Globals.theUnicorn = NPCs.getNearest(Globals.ID_NPCS_UNICORNS);
+        theUnicorn = NPCs.getNearest(Globals.ID_NPCS_UNICORNS);
         Globals.interacting = Players.getLocal().getInteracting();
 
-        if(Globals.theUnicorn == null){
+        if(theUnicorn == null){
             if(paceUnicorns.activate()){
                 paceUnicorns.execute();
             }
         }
 
-        return(Globals.theUnicorn != null && Globals.interacting==null && Globals.theUnicorn.getHealthPercent()!=0
-                && Calculations.distanceTo(Globals.theUnicorn)<=15 && !Inventory.isFull());
+        return(theUnicorn != null && Globals.interacting==null && theUnicorn.getHealthPercent()!=0
+                && Calculations.distanceTo(theUnicorn)<=15 && !Inventory.isFull());
     }
 
     @Override
@@ -115,31 +121,33 @@ public class AttackHandler extends Node {
 
         ActionBarHandler.momentumCheck();
 
-        if(Globals.theUnicorn != null){
-            if(Calculations.distanceTo(Globals.theUnicorn)>=4){
-                if(!altIsOnScreen(Globals.theUnicorn)){
-                    altCameraTurnTo(Globals.theUnicorn);
+        if(theUnicorn != null){
+            if(Calculations.distanceTo(theUnicorn)>=4){
+                if(!altIsOnScreen(theUnicorn)){
+                    altCameraTurnTo(theUnicorn);
                 }
             }
-            if(!altIsOnScreen(Globals.theUnicorn)){
-                altCameraTurnTo(Globals.theUnicorn);
+            if(!altIsOnScreen(theUnicorn)){
+                altCameraTurnTo(theUnicorn);
             }
-            if(Calculations.distanceTo(Globals.theUnicorn)>=8){
-                Walking.walk(Globals.theUnicorn);
+            if(Calculations.distanceTo(theUnicorn)>=8){
+                Walking.walk(theUnicorn);
             }
-            if(!altInteract(Globals.theUnicorn, "Attack", "Unicorn")){
-                Walking.walk(Globals.theUnicorn);
-                altInteract(Globals.theUnicorn, "Attack", "Unicorn");
+            if(!altInteract(theUnicorn, "Attack", "Unicorn")){
+                Walking.walk(theUnicorn);
+                altInteract(theUnicorn, "Attack", "Unicorn");
             }
-            altCameraTurnTo(Globals.theUnicorn);
+            altCameraTurnTo(theUnicorn);
             if(!Globals.me.isInCombat()){
-                Globals.theUnicorn.interact("Attack");
+                theUnicorn.interact("Attack");
             }
         }
 
         if(eating.activate()){
             eating.execute();
         }
+
+        theUnicorn = null;
     }
 
 }
