@@ -7,6 +7,7 @@ import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Area;
@@ -20,6 +21,8 @@ public class TeleportToBankHandler  extends Node {
 
     @Override
     public boolean activate(){
+        Globals.me = Players.getLocal();
+
         Globals.emergencyTeleport();
         return !edgeville.contains(Globals.me.getLocation()) &&
                 Globals.me.getAnimation() == -1 && Inventory.getCount(Globals.ID_ITEMS_HORN)>=27;

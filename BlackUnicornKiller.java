@@ -124,17 +124,21 @@ public class BlackUnicornKiller extends ActiveScript implements PaintListener {
         Mouse.setSpeed(Mouse.Speed.VERY_FAST);
         Camera.setPitch(Random.nextInt(37,45));
 
-        Timer timeCheck = new Timer(15000);
-
         do{
-            if(ActionBarHandler.abilityReady(1)){
-                ActionBarHandler.executeAbility(1);
-            }
-            if(Globals.me.getMessage().matches("Momentum is now active.")){
-                break;
-            }
-            Task.sleep(50,75);
-        }while(timeCheck.isRunning() && !Globals.me.getMessage().matches("Momentum is now active."));
+            sleep(50,75);
+        }while(Globals.me == null);
+
+        //Timer timeCheck = new Timer(15000);
+
+        //do{
+        //    if(ActionBarHandler.abilityReady(1)){
+        //        ActionBarHandler.executeAbility(1);
+        //    }
+        //    if(Globals.me.getMessage().matches("Momentum is now active.")){
+        //        break;
+        //    }
+         //   Task.sleep(50,75);
+        //}while(timeCheck.isRunning() && !Globals.me.getMessage().matches("Momentum is now active."));
     }
 
     @Override

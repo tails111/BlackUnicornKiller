@@ -42,24 +42,27 @@ public class Globals {
     public static final Tile TILE_LOAD_WILDERNESS = new Tile(3143,3635,0);
     public static final Tile TILE_LOAD_EDGEVILLE = new Tile(3067,3505,0);
 
-    public static Character interacting = Players.getLocal().getInteracting();
-    public static Character me = Players.getLocal();
-    public static NPC theUnicorn = NPCs.getNearest(ID_NPCS_UNICORNS);
-    public static GroundItem Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
-    public static WidgetChild food = Inventory.getItem(Globals.ID_ITEMS_LOBSTER).getWidgetChild();
+
+    public static Character interacting;
+    public static Character me;
+    public static NPC theUnicorn;
+    public static GroundItem Loot;
+    public static WidgetChild food;
 
     public static WidgetChild upText = Widgets.get(548, 436).getChild(0);
 
 
     public static boolean emergencyTeleport(){
-        if(me.getHealthPercent()<=70){
-            Timer timeCheck = new Timer(2000);
-            do{
-                if(Inventory.contains(ID_ITEMS_FALLYTAB)){
-                    Inventory.getItem(ID_ITEMS_FALLYTAB).getWidgetChild().interact("Break");
-                }
-            }while(me.getHealthPercent()<=70 && Inventory.contains(ID_ITEMS_FALLYTAB) && timeCheck.isRunning());
-            return true;
+        if(me!=null){
+            if(me.getHealthPercent()<=70){
+                Timer timeCheck = new Timer(2000);
+                do{
+                    if(Inventory.contains(ID_ITEMS_FALLYTAB)){
+                        Inventory.getItem(ID_ITEMS_FALLYTAB).getWidgetChild().interact("Break");
+                    }
+                }while(me.getHealthPercent()<=70 && Inventory.contains(ID_ITEMS_FALLYTAB) && timeCheck.isRunning());
+                return true;
+            }
         }
         return false;
     }

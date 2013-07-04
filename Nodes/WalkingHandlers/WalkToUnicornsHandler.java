@@ -5,6 +5,7 @@ import BlackUnicornKiller.Nodes.Globals;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.wrappers.Tile;
 
@@ -16,6 +17,8 @@ public class WalkToUnicornsHandler extends Node {
 
     @Override
     public boolean activate(){
+        Globals.me = Players.getLocal();
+
         Globals.emergencyTeleport();
         for(int i=0; i<=Globals.unicornPacePath.length-1; i++){
             distanceToUnicorns = Globals.unicornPacePath[i];

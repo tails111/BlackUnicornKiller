@@ -19,6 +19,9 @@ public class TeleportToUnicornsHandler  extends Node {
 
     @Override
     public boolean activate(){
+        Globals.me = Players.getLocal();
+
+
          return (Calculations.distanceTo(Globals.TILE_LOAD_WILDERNESS)>=10 && PaceUnicornsHandler.distanceToUnicorns()<=6
          && !Inventory.contains(Globals.ID_ITEMS_HORN) && Inventory.contains(Globals.ID_ITEMS_LOBSTER)
          && Globals.interacting == null);
