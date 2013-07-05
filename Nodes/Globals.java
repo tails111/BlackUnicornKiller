@@ -21,6 +21,7 @@ import java.net.URL;
 public class Globals {
     public static final int ID_ITEMS_FALLYTAB = 8009, ID_ITEMS_HORN = 237, ID_ITMES_BONES = 526;
     public static final int ID_ITEMS_LOBSTER = 379;
+    public static final int ID_CHARMS_GREEN = 12159, ID_CHARMS_CRIMSON = 12160, ID_CHARMS_BLUE = 12163, ID_CHARMS_GOLD = 12158;
     public static final int ID_NPCS_UNICORNS = 133;
 
     public static int ID_WEAPON = 1405;
@@ -29,8 +30,10 @@ public class Globals {
 
     public static int FoodNum = 1;
 
-    public static final int[] ID_BANK_BOOTH = {42378,42377,42217};
+    public static final int[] ID_CHARMS = {ID_CHARMS_GOLD, ID_CHARMS_CRIMSON, ID_CHARMS_GREEN, ID_CHARMS_BLUE};
 
+
+    public static final int[] ID_BANK_BOOTH = {42378,42377,42217};
     public static final int[] ITEMS_REQUIRED = {ID_ITEMS_FALLYTAB, ID_ITEMS_LOBSTER};
     public static final int[] ITEMS_REQUIRED_AMOUNTS =  {1,FoodNum};
 
@@ -42,9 +45,7 @@ public class Globals {
     public static final Tile TILE_LOAD_WILDERNESS = new Tile(3143,3635,0);
     public static final Tile TILE_LOAD_EDGEVILLE = new Tile(3067,3505,0);
 
-
-    public static Character interacting;
-    public static Character me;
+    public static Character me = Players.getLocal();
 
     public static boolean emergencyTeleport(){
         if(me!=null){

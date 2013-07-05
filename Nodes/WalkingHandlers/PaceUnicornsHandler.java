@@ -9,6 +9,7 @@ import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.interactive.Character;
 
 public class PaceUnicornsHandler extends Node {
 
@@ -27,7 +28,7 @@ public class PaceUnicornsHandler extends Node {
 
     public static Tile distanceToUnicornsTile;
 
-    public static Character placement = 'B';
+    public static char placement = 'B';
 
     public static double distanceToUnicorns(){
         for(int i=0; i<=Globals.unicornPacePath.length-1; i++){
@@ -39,13 +40,16 @@ public class PaceUnicornsHandler extends Node {
         return 0;
     }
 
+    Character interacting;
+    Character me;
+
     @Override
     public boolean activate(){
-        Globals.me = Players.getLocal();
+        me = Players.getLocal();
         Globals.emergencyTeleport();
         return(Inventory.contains(Globals.ID_ITEMS_LOBSTER) && !Inventory.isFull()
-                && Globals.me.getHealthPercent()>=25 && distanceToUnicorns()<=10
-                && Globals.interacting==null);
+                && me.getHealthPercent()>=25 && distanceToUnicorns()<=10
+                && interacting==null);
     }
 
     @Override

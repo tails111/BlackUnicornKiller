@@ -12,20 +12,23 @@ import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.interactive.*;
+import org.powerbot.game.api.wrappers.interactive.Character;
 
 public class TeleportToBankHandler  extends Node {
 
 
     final Area edgeville = new Area(new Tile(3063,3509,0), new Tile(3100,3486,0));
 
+    Character me;
 
     @Override
     public boolean activate(){
-        Globals.me = Players.getLocal();
+        me = Players.getLocal();
 
         Globals.emergencyTeleport();
         return !edgeville.contains(Globals.me.getLocation()) &&
-                Globals.me.getAnimation() == -1 && Inventory.getCount(Globals.ID_ITEMS_HORN)>=27;
+                me.getAnimation() == -1 && Inventory.getCount(Globals.ID_ITEMS_HORN)>=27;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class TeleportToBankHandler  extends Node {
             Timer timeCheck2 = new Timer(2000);
             do{
                 Task.sleep(150,275);
-            }while(Globals.me.isMoving() && timeCheck2.isRunning());
+            }while(me.isMoving() && timeCheck2.isRunning());
         }while(timeCheck.isRunning() && Calculations.distanceTo(Globals.TILE_LOAD_WILDERNESS)>=2);
 
         Walking.walk(Globals.TILE_LOAD_WILDERNESS);

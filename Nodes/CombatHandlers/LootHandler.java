@@ -17,7 +17,7 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.interactive.Player;
+import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -27,8 +27,10 @@ public class LootHandler extends Node {
     Rectangle screen = new Rectangle(1,55,518,258);
     Point clickPoint = new Point();
 
-    public GroundItem Loot;
-    public WidgetChild upText = Widgets.get(548, 436).getChild(0);
+    GroundItem Loot;
+    WidgetChild upText = Widgets.get(548, 436).getChild(0);
+    Character interacting;
+    Character me;
 
     public void altCameraTurnTo(Entity e){
         do{
@@ -75,16 +77,16 @@ public class LootHandler extends Node {
             do{
                 Task.sleep(250,350);
                 BlackUnicornKiller.status = ("Sleeping after click.");
-                if(Globals.interacting != null && Globals.me != null){
-                    if(Globals.interacting.getHealthPercent()<=0 || Globals.me.isIdle()){
+                if(interacting != null && Globals.me != null){
+                    if(interacting.getHealthPercent()<=0 || me.isIdle()){
                         return true;
                     }
-                } else if (Globals.interacting == null){
+                } else if (interacting == null){
                     return false;
                 }
 
-            }while(timeCheck.isRunning() && Globals.interacting.equals(e) ||
-                   Globals.me.isMoving() || Globals.me.isInCombat());
+            }while(timeCheck.isRunning() && interacting.equals(e) ||
+                   me.isMoving() || me.isInCombat());
         }
         return false;
     }
@@ -98,10 +100,16 @@ public class LootHandler extends Node {
         return false;
     }
 
-    public void boneClearer(){
+    public void boneAndCharmClearer(){
         if(Inventory.contains(Globals.ID_ITMES_BONES)){
             Inventory.getItem(Globals.ID_ITMES_BONES).getWidgetChild().interact("Drop");
         }
+        for(int i=0; i<=Globals.ID_CHARMS.length-1; i++){
+            if(Inventory.contains(Globals.ID_CHARMS[i])){
+                Inventory.getItem(Globals.ID_CHARMS[i]).getWidgetChild().interact("Drop");
+            }
+        }
+
     }
 
     @Override
@@ -111,7 +119,7 @@ public class LootHandler extends Node {
         if(!Tabs.getCurrent().equals(Tabs.INVENTORY)){
             Tabs.INVENTORY.open();
         }
-        boneClearer();
+        boneAndCharmClearer();
         Globals.emergencyTeleport();
 
         Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
@@ -125,6 +133,7 @@ public class LootHandler extends Node {
     @Override
     public void execute(){
         while(activate()){
+            System.out.println("Loot handler");
             Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
             Globals.emergencyTeleport();
 
@@ -155,9 +164,10 @@ public class LootHandler extends Node {
                     }
                 }
             }
-            Loot = null;
             BlackUnicornKiller.actualProfit= BlackUnicornKiller.actualProfit + (Globals.HornPrice);
+            BlackUnicornKiller.postedHorns= BlackUnicornKiller.postedHorns + 1;
         }
+        Loot = null;
     }
 
 

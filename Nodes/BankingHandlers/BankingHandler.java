@@ -48,7 +48,6 @@ public class BankingHandler extends Node {
                 int x = 0;
                 do{
                     x++;
-                    BlackUnicornKiller.interacting=bankBooth;
                     bankBooth.interact("Bank");
                     Task.sleep(750,1000);
                     do{

@@ -17,7 +17,8 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.interactive.NPC;
+import org.powerbot.game.api.wrappers.interactive.*;
+import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 import java.awt.*;
@@ -30,8 +31,10 @@ public class AttackHandler extends Node {
     Rectangle screen = new Rectangle(1,55,518,258);
     Point clickPoint = new Point();
 
-    public NPC theUnicorn;
-    public WidgetChild upText = Widgets.get(548, 436).getChild(0);
+    NPC theUnicorn;
+    Character interacting;
+    Character me;
+    WidgetChild upText = Widgets.get(548, 436).getChild(0);
 
 
     public void altCameraTurnTo(Entity e){
@@ -70,18 +73,17 @@ public class AttackHandler extends Node {
 
             Timer timeCheck = new Timer(3000);
             do{
+                me = Players.getLocal();
+                interacting = me.getInteracting();
+
                 Task.sleep(250,350);
                 BlackUnicornKiller.status = ("Sleeping after click.");
-                if(Globals.interacting != null && Globals.me != null){
-                    if(Globals.interacting.getHealthPercent()<=0 || Globals.me.isIdle()){
+                if(interacting != null){
+                    if(interacting.getHealthPercent()<=0 || me.isIdle()){
                         return true;
                     }
-                } else if (Globals.interacting == null){
-                    return false;
                 }
-
-            }while(timeCheck.isRunning() && Globals.interacting.equals(e) ||
-                    Globals.me.isMoving() || Globals.me.isInCombat());
+            }while(timeCheck.isRunning() || me.isMoving() || me.isInCombat());
         }
         return false;
     }
@@ -103,7 +105,8 @@ public class AttackHandler extends Node {
         Globals.emergencyTeleport();
 
         theUnicorn = NPCs.getNearest(Globals.ID_NPCS_UNICORNS);
-        Globals.interacting = Players.getLocal().getInteracting();
+        interacting = Players.getLocal().getInteracting();
+        me = Players.getLocal();
 
         if(theUnicorn == null){
             if(paceUnicorns.activate()){
@@ -111,12 +114,13 @@ public class AttackHandler extends Node {
             }
         }
 
-        return(theUnicorn != null && Globals.interacting==null && theUnicorn.getHealthPercent()!=0
+        return(theUnicorn != null && interacting==null && theUnicorn.getHealthPercent()!=0
                 && Calculations.distanceTo(theUnicorn)<=15 && !Inventory.isFull());
     }
 
     @Override
     public void execute(){
+        System.out.println("Attack handler");
         BlackUnicornKiller.status="Attacking Unicorn.";
 
         ActionBarHandler.momentumCheck();
@@ -138,7 +142,7 @@ public class AttackHandler extends Node {
                 altInteract(theUnicorn, "Attack", "Unicorn");
             }
             altCameraTurnTo(theUnicorn);
-            if(!Globals.me.isInCombat()){
+            if(!me.isInCombat()){
                 theUnicorn.interact("Attack");
             }
         }
