@@ -5,11 +5,8 @@ import BlackUnicornKiller.Nodes.Globals;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.state.Node;
-import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Walking;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.tab.Inventory;
@@ -17,20 +14,14 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.api.wrappers.node.GroundItem;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 import java.awt.*;
 public class LootHandler extends Node {
 
     Rectangle screen = new Rectangle(1,55,518,258);
-    Point clickPoint = new Point();
-
     GroundItem Loot;
-    WidgetChild upText = Widgets.get(548, 436).getChild(0);
-    Character interacting;
-    Character me;
+
 
     public void altCameraTurnTo(Entity e){
         do{
@@ -50,45 +41,6 @@ public class LootHandler extends Node {
             if(timeCheck.getRemaining()<=100){return false;}
         }while(tempInvCount==newInvCount && timeCheck.isRunning());
         return true;
-    }
-
-    public boolean altInteract(Entity e, String cmd, String sub){
-        if(e != null){
-            if(altIsOnScreen(e)){
-                for(Polygon p : e.getBounds()){
-                    if(screen.contains(p.getBounds())){
-                        clickPoint.setLocation(p.getBounds().x,p.getBounds().y);
-                    }
-                }
-                if(upText != null){
-                    e.hover();
-                    if(upText.getText().contains(cmd) && upText.getText().contains(sub)){
-                        clickPoint.setLocation(e.getCentralPoint());
-                        Task.sleep(50,150);
-                        Mouse.click(clickPoint, true);
-                        Task.sleep(250,500);
-                    }else{
-                        if(e.interact(cmd)){return true;}
-                    }
-                }
-
-            }
-            Timer timeCheck = new Timer(3000);
-            do{
-                Task.sleep(250,350);
-                BlackUnicornKiller.status = ("Sleeping after click.");
-                if(interacting != null && Globals.me != null){
-                    if(interacting.getHealthPercent()<=0 || me.isIdle()){
-                        return true;
-                    }
-                } else if (interacting == null){
-                    return false;
-                }
-
-            }while(timeCheck.isRunning() && interacting.equals(e) ||
-                   me.isMoving() || me.isInCombat());
-        }
-        return false;
     }
 
     public boolean altIsOnScreen(Entity e){
@@ -141,22 +93,18 @@ public class LootHandler extends Node {
                 if(!altIsOnScreen(Loot)){
                     BlackUnicornKiller.status = "Walking towards Loot";
                     Walking.walk(Loot);
-                    BlackUnicornKiller.status = "Grabbing Loot.";
-                    Camera.turnTo(Loot);
-                    if(altInteract(Loot, "Take", Loot.getGroundItem().getName())){
+                    BlackUnicornKiller.status = "Turning Camera to Loot";
+                    altCameraTurnTo(Loot);
+                    if(Loot.interact("Take")){
                         invChangeSleep();
                     }
-
                     while(Globals.me.isMoving()){
+                        Globals.me = Players.getLocal();
                         sleep(50,100);
                     }
                 } else {
-                    if(Calculations.distanceTo(Loot)>=2){
-                        BlackUnicornKiller.status = "Turning Camera to Loot.";
-                        altCameraTurnTo(Loot);
-                    }
                     BlackUnicornKiller.status = "Grabbing Loot.";
-                    if(altInteract(Loot, "Take", Loot.getGroundItem().getName())){
+                    if(Loot.interact("Take")){
                         invChangeSleep();
                     }
                     while(Globals.me.isMoving()){

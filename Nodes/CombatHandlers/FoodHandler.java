@@ -7,7 +7,6 @@ import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.wrappers.interactive.*;
 import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -18,12 +17,6 @@ public class FoodHandler extends Node {
 
     public int getHpPercent() {
         return Math.abs(100 - 100 * Widgets.get(748, 5).getHeight() / 28);
-    }
-
-    public void emergencyEat(){
-        if(getHpPercent()<=20){
-            execute();
-        }
     }
 
     @Override

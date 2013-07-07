@@ -1,6 +1,5 @@
 package BlackUnicornKiller.Nodes.CombatHandlers;
 
-
 import BlackUnicornKiller.Nodes.Globals;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;

@@ -10,7 +10,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.interactive.*;
 import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 

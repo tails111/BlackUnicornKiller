@@ -12,7 +12,6 @@ import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.*;
 import org.powerbot.game.api.wrappers.interactive.Character;
 
 public class TeleportToBankHandler  extends Node {
