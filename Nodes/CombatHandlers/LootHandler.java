@@ -24,9 +24,13 @@ public class LootHandler extends Node {
 
 
     public void altCameraTurnTo(Entity e){
+        Timer timeCheck = new Timer(Random.nextInt(2800,3400));
         do{
             Camera.setAngle(Camera.getYaw() + Random.nextInt(35, 55));
-        }while(!altIsOnScreen(e));
+            if(e == null){
+                break;
+            }
+        }while(!altIsOnScreen(e) && timeCheck.isRunning());
     }
 
     public static boolean invChangeSleep(){
@@ -88,6 +92,7 @@ public class LootHandler extends Node {
             System.out.println("Loot handler");
             Loot = GroundItems.getNearest(Globals.ID_ITEMS_HORN);
             Globals.emergencyTeleport();
+            Globals.idleTimeOut();
 
             if(Loot != null){
                 if(!altIsOnScreen(Loot)){
@@ -116,6 +121,7 @@ public class LootHandler extends Node {
             BlackUnicornKiller.postedHorns= BlackUnicornKiller.postedHorns + 1;
         }
         Loot = null;
+
     }
 
 

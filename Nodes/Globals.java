@@ -1,5 +1,9 @@
 package BlackUnicornKiller.Nodes;
 
+import BlackUnicornKiller.Nodes.WalkingHandlers.TeleportToBankHandler;
+import org.powerbot.core.script.job.Task;
+import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Timer;
@@ -39,6 +43,19 @@ public class Globals {
 
     public static Character me = Players.getLocal();
 
+    public static Timer idleCheck = new Timer(45000);
+
+    public static void idleTimeOut(){
+        if(!idleCheck.isRunning()){
+            if(new TeleportToBankHandler().activate()){
+                new TeleportToBankHandler().execute();
+            }
+        }
+        if(!me.isIdle()){
+            idleCheck.reset();
+        }
+    }
+
     public static boolean emergencyTeleport(){
         if(me!=null){
             if(me.getHealthPercent()<=70){
@@ -48,6 +65,19 @@ public class Globals {
                         Inventory.getItem(ID_ITEMS_FALLYTAB).getWidgetChild().interact("Break");
                     }
                 }while(me.getHealthPercent()<=70 && Inventory.contains(ID_ITEMS_FALLYTAB) && timeCheck.isRunning());
+                if(!Globals.me.isInCombat()){
+                    if(!Widgets.get(1092).getChild(0).visible()){
+                        Widgets.get(640).getChild(113).click(true);
+                        Task.sleep(750, 1250);
+                    }
+                    if(Widgets.get(1092).getChild(0).visible()){
+                        Widgets.get(1092).getChild(45).click(true);
+                        Timer timeCheck3 = new Timer(15000);
+                        do{
+                            Task.sleep(1000);
+                        }while(Calculations.distanceTo(Globals.TILE_LOAD_EDGEVILLE)>=5 && timeCheck3.isRunning());
+                    }
+                }
                 return true;
             }
         }

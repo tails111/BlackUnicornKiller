@@ -12,6 +12,7 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.interactive.*;
 import org.powerbot.game.api.wrappers.interactive.Character;
@@ -30,14 +31,13 @@ public class AttackHandler extends Node {
     Character me;
 
     public void altCameraTurnTo(Entity e){
-        int x = 0;
+        Timer timeCheck = new Timer(Random.nextInt(2800,3200));
         do{
             Camera.setAngle(Camera.getYaw() + Random.nextInt(35, 55));
-            x++;
-            if(x>=15 || e == null){
+            if(e == null){
                 break;
             }
-        }while(!altIsOnScreen(e));
+        }while(!altIsOnScreen(e) && timeCheck.isRunning());
     }
 
     public boolean altIsOnScreen(Entity e){
@@ -74,6 +74,8 @@ public class AttackHandler extends Node {
         BlackUnicornKiller.status="Attacking Unicorn.";
 
         ActionBarHandler.momentumCheck();
+        Globals.emergencyTeleport();
+        Globals.idleTimeOut();
 
         if(theUnicorn != null){
             if(Calculations.distanceTo(theUnicorn)>=4){
@@ -102,6 +104,7 @@ public class AttackHandler extends Node {
         if(eating.activate()){
             eating.execute();
         }
+        Globals.idleTimeOut();
 
         theUnicorn = null;
     }
