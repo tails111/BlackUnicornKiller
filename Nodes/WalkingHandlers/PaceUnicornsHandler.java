@@ -47,9 +47,9 @@ public class PaceUnicornsHandler extends Node {
     public boolean activate(){
         me = Players.getLocal();
         Globals.emergencyTeleport();
-        return(Inventory.contains(Globals.ID_ITEMS_LOBSTER) && !Inventory.isFull()
-                && me.getHealthPercent()>=25 && distanceToUnicorns()<=10
-                && interacting == null && GroundItems.getNearest(Globals.ID_ITEMS_HORN) == null);
+        return(!Inventory.isFull() && me.getHealthPercent()>=25 && distanceToUnicorns()<=10
+                && interacting == null && GroundItems.getNearest(Globals.ID_ITEMS_HORN) == null
+                && Inventory.contains(Globals.ID_ITEMS_FALLYTAB));
     }
 
     @Override

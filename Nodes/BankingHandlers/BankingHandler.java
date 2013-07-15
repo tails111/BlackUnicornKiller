@@ -98,6 +98,7 @@ public class BankingHandler extends Node {
             }
             toggleBank(false);
         }
+        Globals.scriptSleeper();
     }
 
 }
